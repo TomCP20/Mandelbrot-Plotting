@@ -3959,16 +3959,20 @@ void main()\r
         col = hsv2rgb(hsv);\r
     }\r
     gl_FragColor = vec4(col, 1.0);\r
-}`,Zk=`varying vec2 coord;\r
+}`,Zk=`uniform float left;\r
+uniform float right;\r
+uniform float bottom;\r
+uniform float top;\r
+\r
+varying vec2 coord;\r
 \r
 void main() {\r
   vec4 modelPosition = modelMatrix * vec4(position, 1.0);\r
   vec4 viewPosition = viewMatrix * modelPosition;\r
   vec4 projectedPosition = projectionMatrix * viewPosition;\r
-\r
   gl_Position = projectedPosition;\r
-  float x = (((projectedPosition.x+1.0f)/2.0f)*2.47f)-2.0f;\r
-  float y = (((projectedPosition.y+1.0f)/2.0f)*2.24f)-1.12f;\r
-  coord = vec2(x, y);\r
+  vec2 size = vec2(right-left, top-bottom);\r
+  vec2 offset = vec2(left, bottom);\r
+  coord = ((projectedPosition.xy+1.0f)/2.0f)*size+offset;\r
 }\r
-`;function Kk(){return Pn.jsx("div",{className:"h-screen",children:Pn.jsx(qk,{orthographic:!0,camera:{left:-1,right:1,bottom:-1,top:1},gl:{preserveDrawingBuffer:!0},children:Pn.jsxs("mesh",{scale:2,children:[Pn.jsx("planeGeometry",{}),Pn.jsx("shaderMaterial",{fragmentShader:jk,vertexShader:Zk})]})})})}uA(document.getElementById("root")).render(Pn.jsx($e.StrictMode,{children:Pn.jsx(Kk,{})}));
+`;function Kk(){const n=$e.useRef(null),e=$e.useMemo(()=>({left:{value:-2},right:{value:.47},bottom:{value:-1.12},top:{value:1.12}}),[]);function t(i){const r=i.unprojectedPoint.x*(n.current.uniforms.right.value-n.current.uniforms.left.value)+n.current.uniforms.left.value,s=i.unprojectedPoint.y*(n.current.uniforms.top.value-n.current.uniforms.bottom.value)+n.current.uniforms.bottom.value,o=1+i.deltaY/1e3;n.current.uniforms.left.value=r+o*(n.current.uniforms.left.value-r),n.current.uniforms.right.value=r+o*(n.current.uniforms.right.value-r),n.current.uniforms.bottom.value=s+o*(n.current.uniforms.bottom.value-s),n.current.uniforms.top.value=s+o*(n.current.uniforms.top.value-s),console.log()}return Pn.jsx("div",{className:"h-screen",children:Pn.jsx(qk,{orthographic:!0,camera:{left:0,right:1,bottom:0,top:1},gl:{preserveDrawingBuffer:!0},children:Pn.jsxs("mesh",{scale:2,onWheel:t,children:[Pn.jsx("planeGeometry",{}),Pn.jsx("shaderMaterial",{fragmentShader:jk,vertexShader:Zk,uniforms:e,ref:n})]})})})}uA(document.getElementById("root")).render(Pn.jsx($e.StrictMode,{children:Pn.jsx(Kk,{})}));
