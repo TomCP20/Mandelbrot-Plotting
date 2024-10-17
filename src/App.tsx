@@ -2,11 +2,12 @@ import { Canvas, ThreeEvent } from '@react-three/fiber'
 import './App.css'
 import fragmentShader from './shaders/fragmentShader.glsl??raw'
 import vertexShader from './shaders/vertexShader.glsl??raw'
-import { useMemo, useRef } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { ShaderMaterial } from 'three';
 
 export default function App() {
   const ref = useRef<ShaderMaterial>(null!)
+  const [drag, setDrag] = useState(false);
   const uniforms = useMemo(() => ({
     left: { value: -2 },
     right: { value: 0.47 },
@@ -23,10 +24,21 @@ export default function App() {
     ref.current.uniforms.top.value = y + zoom * (ref.current.uniforms.top.value - y);
     console.log();
   }
+  function handleMove(event: ThreeEvent<PointerEvent>) {
+    if (drag)
+    {
+      console.log(event.movementX/event.screenX);
+      ref.current.uniforms.left.value -= (event.movementX/event.screenX)*(ref.current.uniforms.right.value - ref.current.uniforms.left.value);
+      ref.current.uniforms.right.value -= (event.movementX/event.screenX)*(ref.current.uniforms.right.value - ref.current.uniforms.left.value);
+
+      ref.current.uniforms.bottom.value += (event.movementY/event.screenY)*(ref.current.uniforms.top.value - ref.current.uniforms.bottom.value);
+      ref.current.uniforms.top.value += (event.movementY/event.screenY)*(ref.current.uniforms.top.value - ref.current.uniforms.bottom.value);
+    }
+  }
   return (
     <div className='h-screen'>
       <Canvas orthographic camera={{ left: 0, right: 1, bottom: 0, top: 1 }} gl={{ preserveDrawingBuffer: true }}>
-        <mesh scale={2} onWheel={handleScroll}>
+        <mesh scale={2} onWheel={handleScroll} onPointerMove={handleMove} onPointerDown={() => setDrag(true)} onPointerUp={() => setDrag(false)}>
           <planeGeometry />
           <shaderMaterial fragmentShader={fragmentShader} vertexShader={vertexShader} uniforms={uniforms} ref={ref} />
         </mesh>
