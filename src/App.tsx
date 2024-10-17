@@ -25,13 +25,13 @@ export default function App() {
     if (drag)
     {
       ref.current.uniforms.offset.value.x -= (event.movementX/event.screenX)*ref.current.uniforms.size.value.x;
-      ref.current.uniforms.offset.value.y -= (event.movementY/event.screenY)*ref.current.uniforms.size.value.y;
+      ref.current.uniforms.offset.value.y += (event.movementY/event.screenY)*ref.current.uniforms.size.value.y;
     }
   }
   return (
     <div className='h-screen'>
       <Canvas orthographic camera={{ left: 0, right: 1, bottom: 0, top: 1 }} gl={{ preserveDrawingBuffer: true }}>
-        <mesh scale={2} onWheel={handleScroll} onPointerMove={handleMove} onPointerDown={() => setDrag(true)} onPointerUp={() => setDrag(false)}>
+        <mesh scale={2} onWheel={handleScroll} onPointerMove={handleMove} onPointerDown={() => setDrag(true)} onPointerUp={() => setDrag(false)} onPointerLeave={() => setDrag(false)}>
           <planeGeometry />
           <shaderMaterial fragmentShader={fragmentShader} vertexShader={vertexShader} uniforms={uniforms} ref={ref} />
         </mesh>
