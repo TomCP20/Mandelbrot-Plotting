@@ -3,36 +3,29 @@ import './App.css'
 import fragmentShader from './shaders/fragmentShader.glsl??raw'
 import vertexShader from './shaders/vertexShader.glsl??raw'
 import { useMemo, useRef, useState } from 'react';
-import { ShaderMaterial } from 'three';
+import { ShaderMaterial, Vector2 } from 'three';
 
 export default function App() {
   const ref = useRef<ShaderMaterial>(null!)
   const [drag, setDrag] = useState(false);
   const uniforms = useMemo(() => ({
-    left: { value: -2 },
-    right: { value: 0.47 },
-    bottom: { value: -1.12 },
-    top: { value: 1.12 },
+    size: { value: new Vector2(2.47, 2.24) },
+    offset: { value: new Vector2(-2, -1.12) },
   }), []);
   function handleScroll(event: ThreeEvent<WheelEvent>) {
-    const x = event.unprojectedPoint.x * (ref.current.uniforms.right.value - ref.current.uniforms.left.value) + ref.current.uniforms.left.value;
-    const y = event.unprojectedPoint.y * (ref.current.uniforms.top.value - ref.current.uniforms.bottom.value) + ref.current.uniforms.bottom.value;
+    const x = event.unprojectedPoint.x * ref.current.uniforms.size.value.x + ref.current.uniforms.offset.value.x;
+    const y = event.unprojectedPoint.y * ref.current.uniforms.size.value.y + ref.current.uniforms.offset.value.y;
     const zoom = 1 + event.deltaY / 1000;
-    ref.current.uniforms.left.value = x + zoom * (ref.current.uniforms.left.value - x);
-    ref.current.uniforms.right.value = x + zoom * (ref.current.uniforms.right.value - x);
-    ref.current.uniforms.bottom.value = y + zoom * (ref.current.uniforms.bottom.value - y);
-    ref.current.uniforms.top.value = y + zoom * (ref.current.uniforms.top.value - y);
-    console.log();
+    ref.current.uniforms.offset.value.x = x + zoom * (ref.current.uniforms.offset.value.x - x);
+    ref.current.uniforms.offset.value.y = y + zoom * (ref.current.uniforms.offset.value.y - y);
+    ref.current.uniforms.size.value.x *= zoom;
+    ref.current.uniforms.size.value.y *= zoom;
   }
   function handleMove(event: ThreeEvent<PointerEvent>) {
     if (drag)
     {
-      console.log(event.movementX/event.screenX);
-      ref.current.uniforms.left.value -= (event.movementX/event.screenX)*(ref.current.uniforms.right.value - ref.current.uniforms.left.value);
-      ref.current.uniforms.right.value -= (event.movementX/event.screenX)*(ref.current.uniforms.right.value - ref.current.uniforms.left.value);
-
-      ref.current.uniforms.bottom.value += (event.movementY/event.screenY)*(ref.current.uniforms.top.value - ref.current.uniforms.bottom.value);
-      ref.current.uniforms.top.value += (event.movementY/event.screenY)*(ref.current.uniforms.top.value - ref.current.uniforms.bottom.value);
+      ref.current.uniforms.offset.value.x -= (event.movementX/event.screenX)*ref.current.uniforms.size.value.x;
+      ref.current.uniforms.offset.value.y -= (event.movementY/event.screenY)*ref.current.uniforms.size.value.y;
     }
   }
   return (

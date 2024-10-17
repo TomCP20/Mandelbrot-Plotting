@@ -1,5 +1,5 @@
-uniform float left;
-uniform float right;
+uniform vec2 size;
+uniform vec2 offset;
 uniform float bottom;
 uniform float top;
 
@@ -10,7 +10,7 @@ void main() {
   vec4 viewPosition = viewMatrix * modelPosition;
   vec4 projectedPosition = projectionMatrix * viewPosition;
   gl_Position = projectedPosition;
-  vec2 size = vec2(right-left, top-bottom);
-  vec2 offset = vec2(left, bottom);
+  //vec2 size = vec2(right-left, top-bottom);
+  //vec2 offset = vec2(left, bottom);
   coord = ((projectedPosition.xy+1.0f)/2.0f)*size+offset;
 }
