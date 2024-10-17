@@ -1,3 +1,5 @@
+uniform int max_iteration;
+
 varying vec2 coord;
 
 vec3 hsv2rgb(vec3 c)
@@ -16,7 +18,6 @@ void main()
     float x2 = 0.0;
     float y2 = 0.0;
     int iteration = 0;
-    int max_iteration = 100;
     while(x2 + y2 <= 4.0 && iteration < max_iteration)
     {
         y = 2.0 * x * y + y0;
