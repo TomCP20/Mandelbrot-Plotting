@@ -6,6 +6,11 @@ View on GitHub Pages [here](https://tomcp20.github.io/Mandelbrot-Plotting/).
 
 ![Screenshot](/Mandelbrot.png)
 
+## Controls
+
+scroll to zoom.
+Click and drag to move.
+
 ## References
 
 [Plotting algorithms for the Mandelbrot set](https://en.wikipedia.org/wiki/Plotting_algorithms_for_the_Mandelbrot_set#Coloring_algorithms)
