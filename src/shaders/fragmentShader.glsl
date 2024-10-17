@@ -33,7 +33,7 @@ void main()
     else
     {
         float val = (float(iteration) / float(max_iteration));
-        float h = pow(val, 1.5f);
+        float h = (mod(pow(val*360.0f, 1.5f),360.0f))/360.0f;
         float s = 1.0f;
         float v = 1.0f;
         vec3 hsv = vec3(h, s, v);
