@@ -31,7 +31,7 @@ export default function App() {
   }
 
   useControls({
-    max_iteration: {
+    "max iteration": {
       value: 100,
       min: 100,
       max: 1000,

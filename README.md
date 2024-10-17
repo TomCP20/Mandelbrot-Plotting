@@ -8,8 +8,10 @@ View on GitHub Pages [here](https://tomcp20.github.io/Mandelbrot-Plotting/).
 
 ## Controls
 
-scroll to zoom.
-Click and drag to move.
+* Scroll to zoom.
+* Click and drag to move.
+* Press reset zoom to reset the camera.
+* max iteration to change the max number of iterations
 
 ## References
 
