@@ -27,16 +27,16 @@ void main()
         iteration++;
     }
     vec3 col;
-    if (iteration == max_iteration)
+    if(iteration == max_iteration)
     {
-        col = vec3(0,0,0);
+        col = vec3(0, 0, 0);
     }
     else
     {
         float val = (float(iteration) / float(max_iteration));
-        float h = (mod(pow(val*360.0f, 1.5f),360.0f))/360.0f;
-        float s = 1.0f;
-        float v = 1.0f;
+        float h = (mod(pow(val * 360.0, 1.5), 360.0)) / 360.0;
+        float s = 1.0;
+        float v = 1.0;
         vec3 hsv = vec3(h, s, v);
         col = hsv2rgb(hsv);
     }
